@@ -1,0 +1,89 @@
+
+package dao;
+
+import database.DB;
+import entities.Product;
+import entities.Category;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ProductDAO {
+
+    public void inserir(String codigo, String nome, double preco, int estoque, int categoria) throws SQLException {
+        Connection conn = DB.getConexao();
+
+        String sql = "INSERT INTO produto (codigo, nome, preco, estoque, categoria_id) VALUES (?,?,?,?,?)";
+        try (PreparedStatement smts = conn.prepareStatement(sql)) {
+            smts.setString(1, codigo);
+            smts.setString(2, nome);
+            smts.setDouble(3, preco);
+            smts.setInt(4, estoque);
+            smts.setInt(5, categoria);
+
+            smts.executeUpdate();
+        }
+    }
+
+    public List<Product> products() throws SQLException {
+        Connection connection = DB.getConexao();
+
+        String sql = """
+                SELECT p.id, p.codigo, p.nome, p.preco, p.estoque,
+                       c.id AS categoria_id, c.nome AS categoria_nome
+                FROM produto p
+                INNER JOIN categorias c ON p.categoria_id = c.id
+                """;
+
+        List<Product> products = new ArrayList<>();
+
+        try (PreparedStatement statement = connection.prepareStatement(sql);
+             ResultSet rs = statement.executeQuery()) {
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String codigo = rs.getString("codigo");
+                String nome = rs.getString("nome");
+                double preco = rs.getDouble("preco");
+                int estoque = rs.getInt("estoque");
+
+                int categoriaId = rs.getInt("categoria_id");
+                String categoriaNome = rs.getString("categoria_nome");
+                Category categoria = new Category(categoriaId, categoriaNome);
+                Product product = new Product(
+                        id, codigo, nome, preco, estoque, categoria
+                );
+                products.add(product);
+            }
+        }
+        return products;
+    }
+
+    public void delete(Integer id) throws  SQLException{
+
+        String sql = "DELETE FROM porduto WHERE id = ?";
+       try(Connection conn = DB.getConexao();
+           PreparedStatement smts = conn.prepareStatement(sql)) {
+            smts.setInt(1, id);
+            smts.executeUpdate();
+        }
+    }
+    public  void update(Integer id, String codigo, String nome, double preco, int estoque) throws SQLException{
+        String sql = "UPDATE produto SET codigo = ?, nome = ?, preco = ?, estoque = ? WHERE id = ?";
+       try (Connection connection = DB.getConexao();
+            PreparedStatement statement = connection.prepareStatement(sql);) {
+           statement.setString(1, codigo);
+           statement.setString(2, nome);
+           statement.setDouble(3, preco);
+           statement.setInt(4, estoque);
+           statement.setInt(5, id);
+           statement.executeUpdate();
+       }
+    }
+
+
+}

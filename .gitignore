@@ -1,0 +1,65 @@
+
+# ========================================
+# STOCKCONTROL - GITIGNORE
+# ========================================
+
+### Arquivos de configuração e senhas ###
+.env
+.env.*
+!.env.example
+config.properties
+db.properties
+application.properties
+application-local.properties
+secrets.properties
+credentials.properties
+
+### Maven ###
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### IntelliJ IDEA ###
+.idea/
+*.iws
+*.iml
+*.ipr
+
+### Eclipse ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+### Kotlin ###
+.kotlin/
+
+### Java ###
+*.class
+out/
+
+### Sistema operacional ###
+.DS_Store
+Thumbs.db
+desktop.ini
+
+### Logs ###
+*.log
+logs/
