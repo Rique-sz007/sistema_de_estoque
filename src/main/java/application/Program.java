@@ -16,13 +16,15 @@ public class Program {
     public static void main(String[] args) throws SQLException {
 
         ProductDAO dao = new ProductDAO();
+        dao.update(2, "POO2", "Mouse", 75.00, 15, 3);
 
         List<Product> products = dao.products();
         for (Product pdc  : products) {
-            System.out.println("Código " + pdc.getCodigo());
-            System.out.println("Nome " + pdc.getNome());
-            System.out.println("Preço " + pdc.getPreco());
-            System.out.println("Estoque " + pdc.getEstoque());
+            System.out.println("Código: " + pdc.getCodigo());
+            System.out.println("Nome: " + pdc.getNome());
+            System.out.println("Preço: " + pdc.getPreco());
+            System.out.println("Estoque: " + pdc.getEstoque());
+            System.out.println("Category: " + pdc.getCategoria().getNome());
             System.out.println();
         }
 

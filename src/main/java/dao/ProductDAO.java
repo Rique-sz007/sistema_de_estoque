@@ -72,15 +72,16 @@ public class ProductDAO {
             smts.executeUpdate();
         }
     }
-    public  void update(Integer id, String codigo, String nome, double preco, int estoque) throws SQLException{
-        String sql = "UPDATE produto SET codigo = ?, nome = ?, preco = ?, estoque = ? WHERE id = ?";
+    public  void update(Integer id, String codigo, String nome, double preco, int estoque, int categoria_id) throws SQLException{
+        String sql = "UPDATE produto SET codigo = ?, nome = ?, preco = ?, estoque = ?, categoria_id = ? WHERE id = ?";
        try (Connection connection = DB.getConexao();
             PreparedStatement statement = connection.prepareStatement(sql);) {
            statement.setString(1, codigo);
            statement.setString(2, nome);
            statement.setDouble(3, preco);
            statement.setInt(4, estoque);
-           statement.setInt(5, id);
+           statement.setInt(5,categoria_id);
+           statement.setInt(6, id);
            statement.executeUpdate();
        }
     }
