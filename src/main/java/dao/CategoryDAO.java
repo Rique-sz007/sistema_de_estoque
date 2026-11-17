@@ -10,47 +10,58 @@ import java.sql.ResultSet;
 
 public class CategoryDAO {
     public void inserir(String nome) throws  SQLException {
-        Connection conn = DB.getConexao();
 
         String sql = "INSERT INTO categorias (nome) VALUES (?)";
-        PreparedStatement statement = conn.prepareStatement(sql);
+        try (Connection conn = DB.getConexao();
+             PreparedStatement statement = conn.prepareStatement(sql)) {
         statement.setString(1, nome);
         statement.executeUpdate();
+        }
     }
 
     public List<Category> categorys() throws SQLException {
-        Connection connection = DB.getConexao();
+
 
         String sql = "SELECT * FROM categorias";
         List<Category> category = new ArrayList<>();
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql);
-            ResultSet rs = stmt.executeQuery()) {
+        try (Connection connection = DB.getConexao();
+             PreparedStatement stmt = connection.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String nome = rs.getString("nome");
-                Category name = new Category(id, nome);
-                category.add(name);
+                Category categoria = new Category(id, nome);
+                category.add(categoria);
             }
             return category;
         }
     }
 
-    public void delete(Integer id) throws SQLException {
-        Connection connection = DB.getConexao();
-
+    public void delete(Integer id) {
         String sql = "DELETE FROM categorias WHERE id = ?";
-        PreparedStatement statement = connection.prepareStatement(sql);
+
+       try ( Connection connection = DB.getConexao();
+        PreparedStatement statement = connection.prepareStatement(sql)) {
         statement.setInt(1, id);
-        statement.executeUpdate();
+        int linhaAfetada = statement.executeUpdate();
+        if (linhaAfetada == 0) {
+            System.out.println("Categoria não encontrada.");
+        } else {
+            System.out.println("Categoria excluída com sucesso.");
+        }
+       } catch (SQLException e) {
+           System.out.println("Categoria não encontrada:  " + e.getMessage());
+
+       }
     }
     public void update(Integer id, String nome) throws SQLException {
-        Connection connection = DB.getConexao();
-
         String sql = "UPDATE categorias SET nome = ? WHERE id = ?";
-        PreparedStatement statement = connection.prepareStatement(sql);
+        try (Connection connection = DB.getConexao();
+        PreparedStatement statement = connection.prepareStatement(sql)) {
         statement.setInt(2, id);
         statement.setString(1, nome);
         statement.executeUpdate();
+        }
     }
 }

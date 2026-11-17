@@ -65,11 +65,17 @@ public class ProductDAO {
 
     public void delete(Integer id) throws  SQLException{
 
-        String sql = "DELETE FROM porduto WHERE id = ?";
+        String sql = "DELETE FROM produto WHERE id = ?";
        try(Connection conn = DB.getConexao();
            PreparedStatement smts = conn.prepareStatement(sql)) {
             smts.setInt(1, id);
-            smts.executeUpdate();
+            int linhaAfetado = smts.executeUpdate();
+            if (linhaAfetado == 0) {
+                System.out.println("Nenhuma  linha foi afetada!");
+            }
+            else {
+                System.out.println("O produto foi excluído!");
+            }
         }
     }
     public  void update(Integer id, String codigo, String nome, double preco, int estoque, int categoria_id) throws SQLException{
@@ -82,7 +88,12 @@ public class ProductDAO {
            statement.setInt(4, estoque);
            statement.setInt(5,categoria_id);
            statement.setInt(6, id);
-           statement.executeUpdate();
+           int linhaAfetada = statement.executeUpdate();
+           if (linhaAfetada == 0) {
+               System.out.println("Nenhum produto foi encontrado.");
+           }
+           else { System.out.println("Produto atualizado com sucesso!");}
+
        }
     }
 
