@@ -4,6 +4,7 @@ import database.DB;
 import entities.Category;
 import  dao.CategoryDAO;
 import entities.Product;
+import services.ProductService;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -15,9 +16,16 @@ import java.util.List;
 public class Program {
     public static void main(String[] args) throws SQLException {
         ProductDAO DAO = new ProductDAO();
-       // CategoryDAO dao = new CategoryDAO();
+        CategoryDAO dao = new CategoryDAO();
+
+        ProductService productService = new ProductService(DAO);
+
+
         try {
-            DAO.inserir("TESTE01", "Produto de teste", 50.00, 10, 1);
+            Category categoria = new Category(1, "Acessórios");
+            Product produto =  new Product(null, "teste03", "produto de teste 3", 80.00, 5, categoria);
+
+            productService.cadastrarProduto(produto);
             System.out.println("Produto cadastrado com sucesso!!");
         }
         catch (SQLException e) {

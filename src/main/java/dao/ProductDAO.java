@@ -14,16 +14,16 @@ import java.util.List;
 
 public class ProductDAO {
 
-    public void inserir(String codigo, String nome, double preco, int estoque, int categoria) throws SQLException {
+    public void inserir(Product produto) throws SQLException {
         Connection conn = DB.getConexao();
 
         String sql = "INSERT INTO produto (codigo, nome, preco, estoque, categoria_id) VALUES (?,?,?,?,?)";
         try (PreparedStatement smts = conn.prepareStatement(sql)) {
-            smts.setString(1, codigo);
-            smts.setString(2, nome);
-            smts.setDouble(3, preco);
-            smts.setInt(4, estoque);
-            smts.setInt(5, categoria);
+            smts.setString(1, produto.getCodigo());
+            smts.setString(2, produto.getNome());
+            smts.setDouble(3, produto.getPreco());
+            smts.setInt(4, produto.getEstoque());
+            smts.setInt(5, produto.getCategoria().getId());
 
             smts.executeUpdate();
         }
