@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class ProductDAO {
 
     public void inserir(Product produto) throws SQLException {

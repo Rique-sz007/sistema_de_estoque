@@ -4,8 +4,9 @@ import database.DB;
 import entities.Category;
 import  dao.CategoryDAO;
 import entities.Product;
+import exceptions.CategoryNotFoundException;
 import services.ProductService;
-
+import exceptions.ProductAlreadyExistsException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Connection;
@@ -22,23 +23,19 @@ public class Program {
 
 
         try {
-            Category categoria = new Category(1, "Acessórios");
-            Product produto =  new Product(null, "teste03", "produto de teste 3", 80.00, 5, categoria);
-
+            Category categoria = new Category(999, "Acessório");
+            Product produto = new Product(null, "teste04", "produto de teste 4", 80.00, 5, categoria);
             productService.cadastrarProduto(produto);
             System.out.println("Produto cadastrado com sucesso!!");
         }
+        catch (ProductAlreadyExistsException e) {
+            System.out.println(e.getMessage());
+        }
+        catch (CategoryNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
         catch (SQLException e) {
-            if (e.getErrorCode() == 1452) {
-                System.out.println("A categoria informada não existe. Verifique o cadastro.");
-            }
-            else if (e.getErrorCode() == 1062) {
-                System.out.println("Esse produto já foi cadastrado!");
-            }
-            else {
-                System.out.println("Ocorreu um erro ao cadastrar o produto.");
-            }
-
+            System.out.println("Ocorreu um erro ao cadastrar produto." + e.getMessage());
             System.out.println("Detalhes técnicos: " + e.getMessage());
         }
         //dao.delete(999);
