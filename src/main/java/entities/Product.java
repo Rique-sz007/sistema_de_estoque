@@ -53,7 +53,7 @@ public class Product {
     }
 
     public void setPreco(Double preco) {
-        if (preco == null || preco <= 0) {
+        if (preco == null || preco <= 0 || !Double.isFinite(preco)) {
             throw new IllegalArgumentException("O preço deve ser maior que zero.");
         }
         this.preco = preco;

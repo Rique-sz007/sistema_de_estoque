@@ -6,6 +6,7 @@ import exceptions.CategoryNotFoundException;
 import exceptions.ProductAlreadyExistsException;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class ProductService {
     private ProductDAO productDAO;
@@ -15,7 +16,7 @@ public class ProductService {
         this.productDAO = productDAO;
 
     }
-    public void cadastrarProduto(Product produto)  throws SQLException, ProductAlreadyExistsException, CategoryNotFoundException{
+    public void cadastrarProduto(Product produto)  throws SQLException, ProductAlreadyExistsException, CategoryNotFoundException {
         try {
             productDAO.inserir(produto);
         }
@@ -26,9 +27,25 @@ public class ProductService {
             else if (e.getErrorCode() == 1062) {
                 throw new ProductAlreadyExistsException("Esse produto já foi cadastrado!");
                 }
-
+            else {
+                throw  e;
             }
 
+            }
+        }
+
+        public List<Product> listarProduto() throws SQLException  {
+        return productDAO.products();
+        }
+        public void atualizarProduto(Product product) throws SQLException {
+
+        productDAO.update(
+                product.getId(),
+                product.getCodigo(),
+                product.getNome(),
+                product.getPreco(),
+                product.getEstoque(),
+                product.getCategoria().getId());
 
         }
 

@@ -18,11 +18,26 @@ public class Program {
     public static void main(String[] args) throws SQLException {
         ProductDAO DAO = new ProductDAO();
         CategoryDAO dao = new CategoryDAO();
-
         ProductService productService = new ProductService(DAO);
+        List<Product> products = productService.listarProduto();
+
+        for (Product product : products) {
+            System.out.println("Codígo: " +product.getCodigo());
+            System.out.println("Nome: " +product.getNome());
+            System.out.println("Preço: " +product.getPreco());
+            System.out.println("Estoque: " +product.getEstoque());
+            System.out.println("Categoria: " +product.getCategoria().getNome());
+            System.out.println();
+        }
 
 
-        try {
+
+
+
+
+
+
+       /* try {
             Category categoria = new Category(999, "Acessório");
             Product produto = new Product(null, "teste04", "produto de teste 4", 80.00, 5, categoria);
             productService.cadastrarProduto(produto);
